@@ -1,7 +1,7 @@
 #include"common.h"
 using namespace std;
 
-vector<pair<int, int>> getSkyline(vector<vector<int>>& buildings) {
+vector<pair<int, int>> getSkyline_solution1(vector<vector<int>>& buildings) {
     auto cmp = [](const pair<int, int>& p1, const pair<int, int>& p2) -> bool const {
         return p1.first>p2.first;
     };
@@ -43,6 +43,31 @@ vector<pair<int, int>> getSkyline(vector<vector<int>>& buildings) {
             tmap.erase(h);
         }
         pq.pop();
+    }
+    return res;
+}
+
+vector<pair<int, int>> getSkyline(vector<vector<int>>& buildings) {
+    auto cmp = [](const pair<int, int>& p1, const pair<int, int>& p2) -> bool const {
+        return p1.first>p2.first;
+    };
+    priority_queue<pair<int, int>, vector<pair<int, int>>, decltype(cmp)> pq(cmp);
+    vector<pair<int, int>> res;
+    set<pair<int, int>> cache;
+    for(int i=0; i<buildings.size() || !pq.empty(); ) {
+        int pos=(i<buildings.size()? buildings[i][0]: INT_MAX);
+        while(!pq.empty() && pq.top().first<=pos) {
+            pos=pq.top().first;
+            cache.erase({pq.top().second, pq.top().first});
+            pq.pop(); 
+        }
+        while(i<buildings.size() && pos==buildings[i][0]) {
+            cache.insert({buildings[i][2], buildings[i][1]});
+            pq.push({buildings[i][1], buildings[i][2]});
+            ++i;
+        }
+        int height=(cache.empty()? 0: cache.rbegin()->first);
+        if(res.empty() || res.back().second!=height) res.push_back({pos, height});
     }
     return res;
 }

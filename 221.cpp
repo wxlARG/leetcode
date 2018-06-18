@@ -28,24 +28,20 @@ int maximalSquare_solution1(vector<vector<char>>& matrix) {
 }
 
 int maximalSquare(vector<vector<char>>& matrix) {
-    int res=0;
-    if(matrix.size()==0) return res;
-    vector<int> height(matrix[0].size(), 0), square(matrix[0].size()+1, 0);
+    if(matrix.size()==0) return 0;
+    vector<int> dp(matrix[0].size()+1, 0);
+    int r=0;
     for(int i=0; i<matrix.size(); ++i) {
-        vector<int> len(matrix[0].size(), 0);
+        int last=dp[0];
         for(int j=0; j<matrix[i].size(); ++j) {
-            int val=matrix[i][j]-'0';
-            height[j]=(val==0? val: height[j]+val);
-            len[j]=(val==0? 0: (j==0? 1: len[j-1]+1));
-        }
-        for(int j=square.size()-1; j>=1; --j) {
-            if(square[j-1] && square[j-1]<min(height[j-1], len[j-1])) square[j]=square[j-1]+1;
-            else if(square[j-1]) square[j]=min(height[j-1], len[j-1]);
-            else square[j]=min(1, min(height[j-1], len[j-1]));
-            res = max(square[j]*square[j], res);
+            int tmp=dp[j+1];
+            if(matrix[i][j]=='0') dp[j+1]=0;
+            else dp[j+1]=min(dp[j+1], min(dp[j], last))+1;
+            last=tmp; 
+            r=max(r, dp[j+1]);
         }
     }
-    return res;
+    return r*r;
 }
 
 int main() {

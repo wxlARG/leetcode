@@ -1,7 +1,7 @@
 #include"common.h"
 using namespace std;
 
-int rangeBitwiseAnd(int m, int n) {
+int rangeBitwiseAnd_solution1(int m, int n) {
     int res=m;
     while(res) {
         unsigned int target=res, pos=0;
@@ -11,6 +11,12 @@ int rangeBitwiseAnd(int m, int n) {
         if(target<=(unsigned int)n) res &= target;
         else break;
     }
+    return res;
+}
+
+int rangeBitwiseAnd(int m, int n) {
+    int res=n;
+    while(res>m) res &= (res-1);
     return res;
 }
 

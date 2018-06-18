@@ -2,10 +2,9 @@
 using namespace std;
 
 struct TrieStruct {
-    char node;
     vector<TrieStruct*> child;
     bool end;
-    TrieStruct(char n=-1): node(n), child(26, NULL), end(false){}
+    TrieStruct(): child(26, NULL), end(false){}
 };
 
 class Trie {
@@ -19,7 +18,7 @@ public:
     void insert(string word) {
         TrieStruct* p=root;
         for(auto &c: word) {
-            if(p->child[c-'a']==NULL) p->child[c-'a'] = new TrieStruct(c-'a');
+            if(p->child[c-'a']==NULL) p->child[c-'a'] = new TrieStruct();
             p=p->child[c-'a'];
         }
         p->end=true;

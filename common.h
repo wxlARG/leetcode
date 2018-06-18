@@ -7,6 +7,7 @@
 #include<set>
 #include<unordered_map>
 #include<unordered_set>
+#include<numeric> 
 #include<time.h> 
 using namespace std;
 

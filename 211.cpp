@@ -1,12 +1,6 @@
 #include"common.h"
 using namespace std;
 
-struct TrieNode {
-    vector<TrieNode*> map;
-    bool is_end;
-    TrieNode(): map(vector<TrieNode*>(26, NULL)), is_end(false) {}
-};
-
 class WordDictionary {
 public:
     /** Initialize your data structure here. */
@@ -18,10 +12,10 @@ public:
     void addWord(string word) {
         TrieNode *node = root;
         for(auto &ch: word) {
-            if(!node->map[ch-'a']) node->map[ch-'a'] = new TrieNode();
-            node = node->map[ch-'a'];
+            if(!node->child[ch-'a']) node->child[ch-'a'] = new TrieNode();
+            node = node->child[ch-'a'];
         }
-        node->is_end=true;
+        node->end=true;
     }
     
     /** Returns if the word is in the data structure. A word could contain the dot character '.' to represent any one letter. */
@@ -34,17 +28,17 @@ private:
     bool helper(TrieNode* node, string& word, int pos) {
         for(int i=pos; i<word.size(); ++i) {
             if(word[i]!='.') {
-                if(node->map[word[i]-'a']) node=node->map[word[i]-'a'];
+                if(node->child[word[i]-'a']) node=node->child[word[i]-'a'];
                 else return false;
             } else {
-                for(auto &trie: node->map) {
+                for(auto &trie: node->child) {
                     if(!trie) continue;
                     if(helper(trie, word, i+1)) return true;
                 }
                 return false;
             }
         }
-        return node->is_end;
+        return node->end;
     }
 };
 

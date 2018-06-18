@@ -1,15 +1,24 @@
 #include"common.h"
 using namespace std;
 
-int countNodes(TreeNode* root) {
+int countNodes_solution1(TreeNode* root) {
     if(root==NULL) return 0;
     int ll=0, lr=1, rr=0;
     for(auto p=root; p; p=p->left) ++ll;
     for(auto p=root; p; p=p->right) ++rr;
     if(ll==rr) return (1<<ll)-1;
     for(auto p=root->left; p; p=p->right) ++lr;
+    if(lr==ll) return ((1<<(lr-1))-1)+1+countNodes_solution1(root->right);
+    else return ((1<<(rr-1))-1)+1+countNodes_solution1(root->left);
+}
+
+int countNodes(TreeNode* root) {
+    if(root==NULL) return 0;
+    int ll=0, lr=1;
+    for(auto p=root; p; p=p->left) ++ll;
+    for(auto p=root->left; p; p=p->right) ++lr;
     if(lr==ll) return ((1<<(lr-1))-1)+1+countNodes(root->right);
-    else return ((1<<(rr-1))-1)+1+countNodes(root->left);
+    else return ((1<<(lr-1))-1)+1+countNodes(root->left);
 }
 
 int main() {

@@ -3,19 +3,19 @@ using namespace std;
 
 bool containsNearbyAlmostDuplicate_solution1(vector<int>& nums, int k, int t) {
     if(t<0) return false;
-    map<long long, long long> cache;
+    set<long long> cache;
     for(int i=0; i<nums.size(); ++i) {
-        if(i>k && --cache[nums[i-k-1]]==0) cache.erase(nums[i-k-1]);
+        if(i>k) cache.erase(nums[i-k-1]);
         if(cache.find(nums[i])!=cache.end()) return true;
-        auto cur=cache.insert({nums[i], 1}).first;
+        auto cur=cache.insert(nums[i]).first;
         auto next=cur;
         ++next;
         if(cur!=cache.begin()) {
             auto prev = cur;
             --prev;
-            if(cur->first-prev->first<=t) return true;
+            if(*cur-*prev<=t) return true;
         }
-        if(next!=cache.end() && next->first-cur->first<=t) return true;
+        if(next!=cache.end() && *next-*cur<=t) return true;
     }
     return false;
 }
