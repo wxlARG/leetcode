@@ -12,7 +12,7 @@ void calc(stack<int>& nums, stack<char>& symbols) {
     else nums.top()/=val;
 }
 
-int calculate(string s) {
+int calculate_solution1(string s) {
     stack<int> nums;
     stack<char> symbols;
     for(int i=0; i<s.size(); ) {
@@ -33,6 +33,29 @@ int calculate(string s) {
     }
     while(!symbols.empty()) calc(nums, symbols);
     return nums.top();
+}
+
+int calculate(string s) {
+    vector<int> nums;
+    int flag=0;
+    for(int i=0; i<s.size(); ++i) {
+        if(s[i]==' ') {
+        } else if(s[i]>='0' && s[i]<='9') {
+            int num=0;
+            for(; s[i]>='0' && s[i]<='9'; ++i) num = num*10+s[i]-'0';
+            if(flag==0) nums.push_back(num);
+            else if(flag==1) nums.push_back(0-num);
+            else if(flag==2) nums.back()*=num;
+            else nums.back()/=num;
+            --i;
+        } else {
+            if(s[i]=='+') flag=0;
+            else if(s[i]=='-') flag=1;
+            else if(s[i]=='*') flag=2;
+            else flag=3;
+        }
+    }
+    return accumulate(nums.begin(), nums.end(), 0);
 }
 
 int main() {
