@@ -1,7 +1,7 @@
 #include"common.h"
 using namespace std;
 
-bool isPowerOfThree(int n) {
+bool isPowerOfThree_solution1(int n) {
     if(n<=0) return false;
     if(n>=43046721) {
         if(n%43046721!=0) return false;
@@ -16,6 +16,11 @@ bool isPowerOfThree(int n) {
         n/=81;
     }
     return n==1 || n==3 || n==9 || n==27;
+}
+
+bool isPowerOfThree(int n) {
+    if(n<=0) return false;
+    return 1162261467%n==0;
 }
 
 int main() {
